@@ -220,6 +220,7 @@ namespace HotelReservationLibrary.Tests
         [Test]
         public void SetRoomType_ShouldThrowException_WhenInvalidRoomType()
         {
+            //have to do it right first so we don't get an exception before the test can run
             var reservation = new Reservation("Single")
             {
                 GuestFirstName = "Nora",
@@ -248,6 +249,7 @@ namespace HotelReservationLibrary.Tests
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
             };
+            //same comment as above here
             reservation.SetSmokingPreference("Non-Smoking");
 
             reservation.Invoking(r => r.SetSmokingPreference("NiceAndSmelly"))
