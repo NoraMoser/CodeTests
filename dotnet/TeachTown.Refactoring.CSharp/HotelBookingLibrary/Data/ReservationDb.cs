@@ -6,6 +6,7 @@ namespace HotelReservationLibrary.Data
     //we want a separate interface bc it's best to have separate database operations
 public class ReservationDb : IReservationDb
 {
+    //this keeps it private (the connection string)
     private readonly string _connectionString;
 
     public ReservationDb(string connectionString)

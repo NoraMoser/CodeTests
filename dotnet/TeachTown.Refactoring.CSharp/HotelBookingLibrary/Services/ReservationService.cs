@@ -13,7 +13,7 @@
             _reservationDb = reservationDb;
         }
 
-        //reservation was spelleed reservashin which doesn'g affect functionality but makes it more confusing for other teammates to read
+        //reservation was spellee reservashin which doesn't affect functionality but makes it more confusing for other teammates to read
         public long BookReservation(Reservation reservation)
         {
             ValidateReservation(reservation);
@@ -61,7 +61,8 @@
             }
             catch (Exception ex)
             {
-               //do something with the ex like log
+               //do something with the ex like log - i would add a logging library but feels out of scope
+               File.AppendAllText("errors.log", $"{DateTime.Now}: {ex}\n");
             }
             return total;
         } 

@@ -10,7 +10,7 @@ namespace HotelReservationClient
         {
 
             IWeatherApi weatherApi = new ExternalWeatherApi();
-            IReservationDb reservationDb = new ReservationDb("YourConnectionStringHere");
+            IReservationDb reservationDb = new ReservationDb("MyConnectionString");
 
             var reservationService = new ReservationService(weatherApi, reservationDb);
             //RoomType is required in constructor now

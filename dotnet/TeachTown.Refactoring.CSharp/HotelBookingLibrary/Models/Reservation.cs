@@ -14,7 +14,7 @@
         {
             SetRoomType(roomType);
         }
-
+        //(below) agai, can't add required bc private setter so set it down below
         public string SmokingOrNonSmoking { get; private set; }
 
         private double _pricePerNight = 100;
