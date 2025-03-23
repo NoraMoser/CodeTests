@@ -13,12 +13,12 @@
             _reservationDb = reservationDb;
         }
 
-        //reservation was spellee reservashin which doesn't affect functionality but makes it more confusing for other teammates to read
+        //reservation was spelled reservashin which doesn't affect functionality but makes it more confusing for other teammates to read
         public long BookReservation(Reservation reservation)
         {
             ValidateReservation(reservation);
 
-            double pricePerNight = reservation.GetPricePerNight();
+            reservation.GetPricePerNight();
 
             double total = reservation.CalculateTotal();
 
@@ -28,7 +28,7 @@
         }
 
         //separating validation and booking so each method is just doing one thing so easier to read and test. also instead of returning 0 for null, we throw an error to make it easier to debug.
-        private void ValidateReservation(Reservation reservation)
+        private static void ValidateReservation(Reservation reservation)
         {
             ArgumentNullException.ThrowIfNull(reservation);
 
