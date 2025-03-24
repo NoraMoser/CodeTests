@@ -15,9 +15,9 @@ namespace HotelReservationLibrary
             _reservationDb = reservationDb ?? throw new ArgumentNullException(nameof(reservationDb));
         }
 
-            // Default constructor for backward compatibility
-            // note I used the Mock one here so I could test it but for you, use the regular ReservationDb with a connection string
-        public ReservationService() : this(new ExternalWeatherApi(), new MockReservationDb())
+        // Default constructor for backward compatibility
+        // note I used the Mock db here so I could test it but for you, use the regular ReservationDb with a connection string
+        public ReservationService() : this(new ExternalWeatherApi(), new ReservationDb("whateverthestringis"))
         {
         }
 
@@ -28,7 +28,7 @@ namespace HotelReservationLibrary
 
             reservation.GetPricePerNight();
 
-            double total = reservation.CalculateTotal();
+            double total = reservation.Total;
 
             total = ChangeForWeather(reservation, total);
 

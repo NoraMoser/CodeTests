@@ -36,7 +36,7 @@ namespace HotelReservationLibrary.Tests
                 SmokingOrNonSmoking = "Non-Smoking"
             };
             
-            double expectedTotal = reservation.CalculateTotal();
+            double expectedTotal = reservation.Total;
             
             _mockReservationDb?
                 .Setup(db => db.AddReservation(reservation, expectedTotal))
@@ -160,7 +160,7 @@ namespace HotelReservationLibrary.Tests
     
             reservationService.BookReservation(reservation);
 
-            reservationDbMock.Verify(db => db.AddReservation(reservation, It.Is<double>(total => total == reservation.CalculateTotal() * 1.2)), Times.Once);
+            reservationDbMock.Verify(db => db.AddReservation(reservation, It.Is<double>(total => total == reservation.Total * 1.2)), Times.Once);
         }
 
         [Test]
@@ -189,7 +189,7 @@ namespace HotelReservationLibrary.Tests
 
             reservationService.BookReservation(reservation);
 
-            reservationDbMock.Verify(db => db.AddReservation(reservation, It.Is<double>(total => total == reservation.CalculateTotal() * 1.2)), Times.Once);
+            reservationDbMock.Verify(db => db.AddReservation(reservation, It.Is<double>(total => total == reservation.Total * 1.2)), Times.Once);
         }
 
         [Test]
@@ -214,7 +214,7 @@ namespace HotelReservationLibrary.Tests
           
             reservationService.BookReservation(reservation);
 
-            reservationDbMock.Verify(db => db.AddReservation(reservation, It.Is<double>(total => total == reservation.CalculateTotal())), Times.Once);
+            reservationDbMock.Verify(db => db.AddReservation(reservation, It.Is<double>(total => total == reservation.Total)), Times.Once);
         }
 
         [Test]
@@ -277,7 +277,7 @@ namespace HotelReservationLibrary.Tests
 
             double expectedTotal = 100 * 3;
 
-            var total = reservation.CalculateTotal();
+            var total = reservation.Total;
 
             total.Should().Be(expectedTotal);
         }
@@ -299,7 +299,7 @@ namespace HotelReservationLibrary.Tests
 
             double expectedTotal = 150 * 4;
 
-            var total = reservation.CalculateTotal();
+            var total = reservation.Total;
 
             total.Should().Be(expectedTotal);
         }

@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 
 namespace HotelReservationLibrary.Data
 {
-    //we want a separate interface bc it's best to have separate database operations
+//we want a separate interface bc it's best to have separate database operations
 public class ReservationDb : IReservationDb
 {
     //this keeps it private (the connection string)
@@ -14,7 +14,7 @@ public class ReservationDb : IReservationDb
         _connectionString = connectionString;
     }
 
-//was static so hard to mock for unit tests
+    //was static so hard to mock for unit tests
     public long AddReservation(Reservation reservation, double total)
     {
         using (var connection = new SqlConnection(_connectionString))

@@ -4,6 +4,7 @@ namespace HotelReservationLibrary
 {
     public class Reservation
     {
+        //dependency injection here makes it so class can easily be extended
         private IRoomPricing _pricingService;
         private string _roomType = "Single";
         private double _pricePerNight;          
@@ -14,8 +15,7 @@ namespace HotelReservationLibrary
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public int NumberOfAdditionalGuests { get; set; }
-     // RoomType is required, so we initialize _pricePerNight when it's set   
-        //thus makes it backwards compatible with program.cs
+        //this makes it backwards compatible with program.cs
         public Reservation() : this(new RoomPricing("Single")) { }
         // constructor for injecting pricing service
         public Reservation(RoomPricing pricingService)
@@ -44,23 +44,25 @@ namespace HotelReservationLibrary
             return _pricingService.GetPrice(); // Fetch price from RoomPricing service
         }
         public required string SmokingOrNonSmoking { get; set; }
-
-        //(below)Room Type and smoking preference are strings so we need to validate them to make sure they are valid valiues (below)
-
+        //Room Type and smoking preference are strings so we need to validate them to make sure they are valid valiues (below)
         public void SetSmokingPreference(string preference)
         {
-            var validPreferences = new[] { "Smoking", "Non-Smoking" };
-            if (!validPreferences.Contains(preference))
-                throw new ArgumentException("Invalid smoking preference. Choose 'Smoking' or 'Non-Smoking'.");
+            if (_pricingService is ISmokingPreference smokingPreference)
+            {
+                smokingPreference.SetSmokingPreference(preference);
+            }
+        }
 
-            SmokingOrNonSmoking = preference;
+        // Get smoking preference
+        public string GetSmokingPreference()
+        {
+            if (_pricingService is ISmokingPreference smokingPreference)
+            {
+                return smokingPreference.GetSmokingPreference();
+            }
+            return "Not Set";
         }
         //(below)we had to put total in a method bc it was internal so exposed within assembly - this way it's not a settable prop 
-        public double Total => CalculateTotal();
-        public double CalculateTotal()
-        {
-            int numberOfNights = (CheckOutDate - CheckInDate).Days;
-            return numberOfNights * _pricePerNight;
-        }
+       public double Total => _pricingService.CalculateTotal(this);
     }
 }
