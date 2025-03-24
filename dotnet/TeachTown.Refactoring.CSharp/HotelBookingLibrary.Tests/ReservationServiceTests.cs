@@ -2,7 +2,6 @@
 using Moq;
 using FluentAssertions;
 using HotelReservationLibrary;
-using HotelReservationLibrary.Services;
 
 namespace HotelReservationLibrary.Tests
 {
@@ -25,17 +24,17 @@ namespace HotelReservationLibrary.Tests
         public void BookReservation_ShouldReturnValidReservationNumber()
         {
             
-            var reservation = new Reservation("Single")
+            var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhireme@teachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-        
-                reservation.SetSmokingPreference("Non-Smoking");
             
             double expectedTotal = reservation.CalculateTotal();
             
@@ -55,17 +54,17 @@ namespace HotelReservationLibrary.Tests
             var weatherApiMock = new Mock<IWeatherApi>();
             var reservationDbMock = new Mock<IReservationDb>();
             var reservationService = new ReservationService(weatherApiMock.Object, reservationDbMock.Object);
-            var reservation = new Reservation("Single")
+          var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhireme@teachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-        
-                reservation.SetSmokingPreference("Non-Smoking");
            
             Assert.Throws<ArgumentException>(() => reservationService.BookReservation(reservation));
         }
@@ -77,17 +76,17 @@ namespace HotelReservationLibrary.Tests
             var weatherApiMock = new Mock<IWeatherApi>();
             var reservationDbMock = new Mock<IReservationDb>();
             var reservationService = new ReservationService(weatherApiMock.Object, reservationDbMock.Object);
-            var reservation = new Reservation("Single")
+          var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "",
                 GuestEmail = "youshouldhireme@teachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-        
-                reservation.SetSmokingPreference("Non-Smoking");
            
             Assert.Throws<ArgumentException>(() => reservationService.BookReservation(reservation));
         }
@@ -98,17 +97,17 @@ namespace HotelReservationLibrary.Tests
             var weatherApiMock = new Mock<IWeatherApi>();
             var reservationDbMock = new Mock<IReservationDb>();
             var reservationService = new ReservationService(weatherApiMock.Object, reservationDbMock.Object);
-            var reservation = new Reservation("Single")
+            var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhiremeteachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-        
-                reservation.SetSmokingPreference("Non-Smoking");
            
             Assert.Throws<ArgumentException>(() => reservationService.BookReservation(reservation));
         }
@@ -119,17 +118,17 @@ namespace HotelReservationLibrary.Tests
             var weatherApiMock = new Mock<IWeatherApi>();
             var reservationDbMock = new Mock<IReservationDb>();
             var reservationService = new ReservationService(weatherApiMock.Object, reservationDbMock.Object);
-            var reservation = new Reservation("Single")
-                    {
-                        GuestFirstName = "Nora",
-                        GuestLastName = "Moser",
-                        GuestEmail = "youshouldhireme@teachtown.com",
-                        CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
-                        CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
-                        NumberOfAdditionalGuests = 1,
-                    };
-        
-                reservation.SetSmokingPreference("Non-Smoking");
+            var reservation = new Reservation()
+            {
+                RoomType = "Single",
+                GuestFirstName = "Nora",
+                GuestLastName = "Moser",
+                GuestEmail = "youshouldhireme@teachtown.com",
+                CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
+                CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
+                NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
+            };
     
             Assert.Throws<ArgumentException>(() => reservationService.BookReservation(reservation));
         }
@@ -147,16 +146,17 @@ namespace HotelReservationLibrary.Tests
 
             var reservationDbMock = new Mock<IReservationDb>();
             var reservationService = new ReservationService(weatherApiMock.Object, reservationDbMock.Object);
-            var reservation = new Reservation("Single")
+            var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhireme@teachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-                reservation.SetSmokingPreference("Non-Smoking");
     
             reservationService.BookReservation(reservation);
 
@@ -175,16 +175,17 @@ namespace HotelReservationLibrary.Tests
 
             var reservationDbMock = new Mock<IReservationDb>();
             var reservationService = new ReservationService(weatherApiMock.Object, reservationDbMock.Object);
-            var reservation = new Reservation("Single")
+            var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhireme@teachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-                reservation.SetSmokingPreference("Non-Smoking");
 
             reservationService.BookReservation(reservation);
 
@@ -199,58 +200,58 @@ namespace HotelReservationLibrary.Tests
 
             var reservationDbMock = new Mock<IReservationDb>();
             var reservationService = new ReservationService(weatherApiMock.Object, reservationDbMock.Object);
-            var reservation = new Reservation("Single")
+            var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
-                GuestEmail = "youshouldhireme@teachtown.com",
+                GuestEmail = "youshouldhireme@eachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-                reservation.SetSmokingPreference("Non-Smoking");
           
             reservationService.BookReservation(reservation);
 
             reservationDbMock.Verify(db => db.AddReservation(reservation, It.Is<double>(total => total == reservation.CalculateTotal())), Times.Once);
         }
 
-
-
         [Test]
-        public void SetRoomType_ShouldThrowException_WhenInvalidRoomType()
+        public void Reservation_ShouldThrowException_WhenInvalidRoomTypeIsSetInObjectInitialization()
         {
-            //have to do it right first so we don't get an exception before the test can run
-            var reservation = new Reservation("Single")
+            // directly initialize the reservation with an invalid RoomType
+            Action act = () => new Reservation()
             {
+                RoomType = "BigOne",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhireme@teachtown.com",
-                CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
-                CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
+                CheckInDate = new DateTime(2025, 1, 1),
+                CheckOutDate = new DateTime(2025, 1, 1).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-            reservation.SetSmokingPreference("Non-Smoking");
-        
-            reservation.Invoking(r => r.SetRoomType("BigOne"))
-                    .Should().Throw<ArgumentException>()
-                    .WithMessage("Invalid room type.");
+
+            act.Should().Throw<ArgumentException>()
+                .WithMessage("Invalid room type.");
         }
+
 
         [Test]
         public void SetSmokingPreference_ShouldThrowException_WhenInvalidPreference()
         {
-            var reservation = new Reservation("Single")
+            var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhireme@teachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-            //same comment as above here
-            reservation.SetSmokingPreference("Non-Smoking");
 
             reservation.Invoking(r => r.SetSmokingPreference("NiceAndSmelly"))
                     .Should().Throw<ArgumentException>()
@@ -262,16 +263,17 @@ namespace HotelReservationLibrary.Tests
         public void CalculateTotal_ShouldReturnCorrectAmount()
         {
     
-            var reservation = new Reservation("Single")
+            var reservation = new Reservation()
             {
+                RoomType = "Single",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
                 GuestEmail = "youshouldhireme@teachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(3),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-            reservation.SetSmokingPreference("Non-Smoking");
 
             double expectedTotal = 100 * 3;
 
@@ -283,16 +285,17 @@ namespace HotelReservationLibrary.Tests
         [Test]
         public void CalculateTotal_ShouldAdjustBasedOnRoomzSizeandDates()
         {
-            var reservation = new Reservation("Double")
+            var reservation = new Reservation()
             {
+                RoomType = "Double",
                 GuestFirstName = "Nora",
                 GuestLastName = "Moser",
-                GuestEmail = "youshouldhireme@teachtown.com",
+                GuestEmail = "youshouldhiremet@eachtown.com",
                 CheckInDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local),
                 CheckOutDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local).AddDays(4),
                 NumberOfAdditionalGuests = 1,
+                SmokingOrNonSmoking = "Non-Smoking"
             };
-            reservation.SetSmokingPreference("Non-Smoking");
 
             double expectedTotal = 150 * 4;
 

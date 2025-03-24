@@ -1,35 +1,51 @@
-﻿namespace HotelReservationLibrary
+﻿using HotelReservationLibrary.Services;
+
+namespace HotelReservationLibrary
 {
     public class Reservation
     {
+        private IRoomPricing _pricingService;
+        private string _roomType = "Single";
+        private double _pricePerNight;          
+
         public required string GuestFirstName { get; set; }
         public required string GuestLastName { get; set; }        
         public required string GuestEmail { get; set; }
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public int NumberOfAdditionalGuests { get; set; }
-        //(below) this is required but private setter so i'm using the constructor to enforce val
-        public string RoomType { get; private set; }
-        public Reservation(string roomType)
+     // RoomType is required, so we initialize _pricePerNight when it's set   
+        //thus makes it backwards compatible with program.cs
+        public Reservation() : this(new RoomPricing("Single")) { }
+        // constructor for injecting pricing service
+        public Reservation(RoomPricing pricingService)
         {
-            SetRoomType(roomType);
+           _pricingService = pricingService;
+           _pricePerNight = _pricingService.GetPrice(); 
+        
         }
-        //(below) agai, can't add required bc private setter so set it down below
-        public string SmokingOrNonSmoking { get; private set; }
+        public required string RoomType
+        {
+            get => _roomType;
+            set
+            {
+                var validTypes = new[] { "Single", "Double", "Suite" };
+                if (!validTypes.Contains(value))
+                    throw new ArgumentException("Invalid room type.");
 
-        private double _pricePerNight = 100;
-        //(below)we had to put total in a method bc it was internal so exposed within assembly - this way it's not a settable prop 
-        public double Total => CalculateTotal();
-        //(below)Room Type and smoking preference are strings so we need to validate them to make sure they are valid valiues (below)
-        public void SetRoomType(string roomType)
-        {
-            var validTypes = new[] { "Single", "Double", "Suite" };
-            if (!validTypes.Contains(roomType))
-                throw new ArgumentException("Invalid room type.");
-            
-            RoomType = roomType;
-            _pricePerNight = GetPricePerNight();
+                _roomType = value;
+                //this updates the room type before running the get price method
+                _pricingService = new RoomPricing(_roomType);
+                _pricePerNight = _pricingService.GetPrice();
+            }
         }
+        public double GetPricePerNight()
+        {
+            return _pricingService.GetPrice(); // Fetch price from RoomPricing service
+        }
+        public required string SmokingOrNonSmoking { get; set; }
+
+        //(below)Room Type and smoking preference are strings so we need to validate them to make sure they are valid valiues (below)
 
         public void SetSmokingPreference(string preference)
         {
@@ -39,18 +55,8 @@
 
             SmokingOrNonSmoking = preference;
         }
-        //default value should change based on room type
-        public double GetPricePerNight()
-        {
-            return RoomType switch
-            {
-                "Single" => 100,
-                "Double" => 150,
-                "Suite" => 250,
-                _ => 100
-            };
-        }
-
+        //(below)we had to put total in a method bc it was internal so exposed within assembly - this way it's not a settable prop 
+        public double Total => CalculateTotal();
         public double CalculateTotal()
         {
             int numberOfNights = (CheckOutDate - CheckInDate).Days;

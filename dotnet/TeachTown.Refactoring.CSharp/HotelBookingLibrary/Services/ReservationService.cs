@@ -1,4 +1,6 @@
-﻿namespace HotelReservationLibrary.Services
+﻿using HotelReservationLibrary.Data;
+
+namespace HotelReservationLibrary
 {
     public class ReservationService
     {
@@ -6,11 +8,17 @@
         private readonly IWeatherApi _weatherApi;
         private readonly IReservationDb _reservationDb;
 
-        // constructor inject dependencies
+        // constructor inject dependencies - doing it this way for backwards compatibility
         public ReservationService(IWeatherApi weatherApi, IReservationDb reservationDb)
         {
-            _weatherApi = weatherApi;
-            _reservationDb = reservationDb;
+            _weatherApi = weatherApi ?? throw new ArgumentNullException(nameof(weatherApi));
+            _reservationDb = reservationDb ?? throw new ArgumentNullException(nameof(reservationDb));
+        }
+
+            // Default constructor for backward compatibility
+            // note I used the Mock one here so I could test it but for you, use the regular ReservationDb with a connection string
+        public ReservationService() : this(new ExternalWeatherApi(), new MockReservationDb())
+        {
         }
 
         //reservation was spelled reservashin which doesn't affect functionality but makes it more confusing for other teammates to read
